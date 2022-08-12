@@ -1,0 +1,24 @@
+
+step 1: run code in project using terminal
+            pipenv install PyMySQL flask
+                test this out sometime: pipenv install PyMySQL flask flask-bcrypt
+
+step 2: save erd file in project
+
+step 3: change codes to fit project
+
+step 4: activate for loop for flash if 
+        there's alot of messages
+
+step 5: if password data is being used --->
+        With your pipenv environment activated (pipenv shell),
+        run the following command:
+            pipenv install flask-bcrypt
+
+step 6: delete all comments
+
+terminal commands
+cd ----------------------------->
+cd.. --------------------------->
+pipenv install PyMySQL flask ---> install flask -> mysql and pip files
+mysql -u root -p ---------------> run mysql in terminal
