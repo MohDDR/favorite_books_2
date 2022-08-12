@@ -20,7 +20,12 @@ class User:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
-        self.reviews_made = []
+        self.books_reviewed = []
+        self.books_posted = []
+        self.users_book_lists = []
+        self.friends = []
+        self.posts = []
+        self.likes = []
 
     @classmethod
     def get_by_email(cls,data):
