@@ -4,7 +4,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 import re
 
-class Book:
+class List:
 
     DB = 'favorite_books_schema'
 
