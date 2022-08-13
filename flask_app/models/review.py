@@ -14,7 +14,7 @@ class Review:
         self.content = data['content']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-
         self.book_id = data['book']
         self.reviewer_id = data['reviewer']
+        
         self.likes = []
