@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 #from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
 from flask import flash
 import re
 
@@ -17,3 +16,9 @@ class Post:
 
         self.comments = []
         self.likes = []
+
+# create a post
+# delete a post
+# edit a post
+# get posts by poster id
+# get all posts

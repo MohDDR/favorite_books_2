@@ -1,10 +1,9 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 #from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
 from flask import flash
 import re
 
-class Review:
+class Like:
 
     DB = 'favorite_books_schema'
 
@@ -16,3 +15,11 @@ class Review:
         self.review_id = data ['review_id']
         self.list_id = data ['list_id']
         self.liker_id = data ['liker_id']
+
+# like a review
+# like a book
+# like a comment
+# like a list
+# like a post
+# remove a like
+# get likers likes

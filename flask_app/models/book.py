@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 #from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
 from flask import flash
 import re
 
@@ -20,3 +19,12 @@ class Book:
 
         self.reviews = []
         self.book_list = []
+
+# add a book
+# edit a book
+# delete a book
+# get book by title
+# get book by author
+# get book by poster
+# get book by page_count
+# get book by description keyword

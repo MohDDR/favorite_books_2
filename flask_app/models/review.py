@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 #from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
 from flask import flash
 import re
 
@@ -16,5 +15,12 @@ class Review:
         self.updated_at = data['updated_at']
         self.book_id = data['book']
         self.reviewer_id = data['reviewer']
-        
+
         self.likes = []
+
+# create a review
+# delete a review
+# edit a review
+# get all reviews
+# get reviews by book id
+# get reviews by reviewer id

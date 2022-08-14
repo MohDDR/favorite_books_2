@@ -1,11 +1,8 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-#from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
-from flask import flash
+from flask_bcrypt import Bcrypt
+from flask import flash, session
 import re
-
-#bcrypt = Bcrypt(app)     # we are creating an object called bcrypt, 
-                        # which is made by invoking the function Bcrypt with our app as an argument
+bcrypt = Bcrypt(app)
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
@@ -28,24 +25,99 @@ class User:
         self.likes = []
 
     @classmethod
-    def get_by_email(cls,data):
-        query = "SELECT * FROM users WHERE email = %(email)s;"
-        result = connectToMySQL("mydb").query_db(query,data)
-        # Didn't find a matching user
-        if len(result) < 1:
-            return False
-        return cls(result[0])
+    def login(cls, data):
+        query = """
+        SELECT * FROM users 
+        WHERE email = %(email)s
+        ;"""
+        results = connectToMySQL(cls.DB).query_db(query, data)
+        user = cls( results[0] )
+        session['user_id'] = user.id
 
     @classmethod
-    def save(cls,data):
-        query = "INSERT INTO users (username, password) VALUES (%(username)s, %(password)s);"
-        return connectToMySQL("mydb").mysql.query_db(query, data)
+    def register(cls,data):
+        query = """
+        INSERT INTO users 
+        (first_name, last_name, email, password) 
+        VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s)
+        ;"""
+        session['user_id'] = connectToMySQL(cls.DB).query_db(query, data)
+
+    @classmethod
+    def get_user_by_id(cls):
+        data = { 'id' : session['user_id']}
+        query = '''
+        SELECT * FROM users
+        WHERE id = %(id)s
+        ;'''
+        results = connectToMySQL(User.DB).query_db(query, data)
+        user = cls( results[0] )
+        return user
 
     @staticmethod
-    def validate_what( data ):
+    def get_user_by_email(data):
+        query = '''
+        SELECT * FROM users
+        WHERE email = %(email)s
+        ;'''
+        results = connectToMySQL(User.DB).query_db(query, data)
+        return results
+
+    @staticmethod
+    def validate_registration_form( data ):
         is_valid = True
-        if not EMAIL_REGEX.match(data['?']): 
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if not EMAIL_REGEX.match(data['email']): #| User.email_search(data): 
             flash("Invalid email address!")
+            is_valid = False
+        if len(data['first_name']) < 2:
+            flash("first name must be at least 2 characters.")
+            is_valid = False
+        if len(data['last_name']) < 2:
+            flash("last name must be at least 2 characters.")
+            is_valid = False
+        if User.get_user_by_email(data):
+            flash("Invalid email address!")
+            is_valid = False
+        if len(data['password']) < 8:
+            flash("password must be at least 8 characters.")
+            is_valid = False
+        if bcrypt.check_password_hash(data['password'], data['password']):
+            flash("your passwords are not the same!!!")
             is_valid = False
         return is_valid
 
+    @staticmethod
+    def validate_login_form( data ):
+        is_valid = False
+        if User.email_search(data):
+            user = User.email_search(data)
+            password = user[0]['password']
+            if bcrypt.check_password_hash(password, data['password']):
+                is_valid = True
+        flash("Invalid login information!")
+        return is_valid
+
+    @staticmethod
+    def parse_registration_data(data):
+        parsed_data = {
+            'first_name' : data['first_name'],
+            'last_name' : data['last_name'],
+            'email' : data['email'].lower(),
+            'password' :  bcrypt.generate_password_hash(data['password'])
+        }
+        return parsed_data
+
+    @staticmethod
+    def parse_login_data(data):
+        parsed_data = {
+            'email' : data['email'].lower(),
+            'password' : data['password']
+        }
+        return parsed_data
+
+# get user reviews
+# get user books posted
+# get user friends
+# get user posts
+# get all user activity

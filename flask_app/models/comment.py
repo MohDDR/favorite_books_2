@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 #from datetime import datetime
-#from flask_bcrypt import Bcrypt        if using password ---> activate
 from flask import flash
 import re
 
@@ -17,3 +16,10 @@ class Comment:
         self.updated_at = data['updated_at']
 
         self.likes = []
+
+# create a comment
+# edit a comment
+# delete a comment
+# get comments by post
+# get comments by commenter
+# get all comments
