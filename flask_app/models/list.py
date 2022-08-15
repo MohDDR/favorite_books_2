@@ -110,9 +110,9 @@ class List:
         :"""
         connectToMySQL(cls.DB).query_db(query, data)
 
-# lists saved by user
+# lists saved by user // should i include the users info?
     @classmethod
-    def get_users_saved_lists(cls):
+    def get_this_users_saved_lists(cls):
         data = { 'id' : session['user_id']}
         query = """
         SELECT * FROM saved_lists
