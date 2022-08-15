@@ -19,7 +19,7 @@ class User:
 
         self.books_reviewed = []
         self.books_posted = []
-        self.users_book_lists = []
+        self.users_saved_lists = []
         self.friends = []
         self.posts = []
         self.likes = []
@@ -53,6 +53,10 @@ class User:
         results = connectToMySQL(User.DB).query_db(query, data)
         user = cls( results[0] )
         return user
+
+# get most recent user activity
+
+# get user with saved lists, posts, friends
 
     @staticmethod
     def get_user_by_email(data):
@@ -115,9 +119,3 @@ class User:
             'password' : data['password']
         }
         return parsed_data
-
-# get user reviews
-# get user books posted
-# get user friends
-# get user posts
-# get all user activity

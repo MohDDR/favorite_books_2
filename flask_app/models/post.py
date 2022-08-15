@@ -18,7 +18,46 @@ class Post:
         self.likes = []
 
 # create a post
+    @classmethod
+    def create_post(cls,data):
+        query = """
+        INSERT INTO posts 
+        (content, poster_id) 
+        VALUES (%(content)s, %(poster_id)s)
+        ;"""
+        connectToMySQL(cls.DB).query_db(query, data)
+
 # delete a post
-# edit a post
+    @classmethod
+    def delete_post(cls, post_id):
+        data = { 'id' : post_id }
+        query = """
+        DELETE FROM posts WHERE id =%(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db( query, data )
+
+# update a post
+    @classmethod
+    def update_post(cls, data):
+        query = """
+        UPDATE posts
+        SET content = %(content)s
+        WHERE id = %(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db( query, data )
+
 # get posts by poster id
-# get all posts
+    @classmethod
+    def get_all_posts_by_poster_id(cls, poster_id):
+        data = { 'id' : poster_id }
+        query = """
+        SELECT * FROM posts 
+        WHERE poster_id = %(id)s
+        ;"""
+        results = connectToMySQL(cls.DB).query_db( query, data )
+        posts = []
+        for post in results:
+            posts.append( cls(post) )
+        return posts
+
+# get most recent posts

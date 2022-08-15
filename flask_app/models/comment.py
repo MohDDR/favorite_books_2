@@ -12,6 +12,7 @@ class Comment:
         self.content = data['content']
         self.commenter_id = data['commenter_id']
         self.post_id = data['post_id']
+        self.list_id = data['list_id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -21,5 +22,6 @@ class Comment:
 # edit a comment
 # delete a comment
 # get comments by post
+# get comments by list
 # get comments by commenter
 # get all comments

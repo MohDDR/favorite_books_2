@@ -17,11 +17,64 @@ class List:
         self.creator_id = data['creator_id']
 
         self.likes = []
-        self.book_list = []
 
 # create a list
+    @classmethod
+    def create_list(cls,data):
+        query = """
+        INSERT INTO book_lists 
+        (title, description, book_id, creator_id) 
+        VALUES (%(title)s, %(description)s, %(book_id)s, %(creator_id)s)
+        ;"""
+        connectToMySQL(cls.DB).query_db(query, data)
+
 # delete a list
-# edit a list
+    @classmethod
+    def delete_list(cls, list_id):
+        data = { 'id' : list_id }
+        query = """
+        DELETE FROM book_lists WHERE id =%(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db( query, data )
+
+# update a list
+    @classmethod
+    def update_list(cls, data):
+        query = """
+        UPDATE book_lists
+        SET title = %(title)s, description = %(description)s
+        WHERE id = %(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db( query, data )
+
 # get lists by creator id
+    @classmethod
+    def get_all_lists_by_creator_id(cls, creator_id):
+        data = { 'id' : creator_id }
+        query = """
+        SELECT * FROM book_lists 
+        WHERE creator_id = %(id)s
+        ;"""
+        results = connectToMySQL(cls.DB).query_db( query, data )
+        book_lists = []
+        for book_list in results:
+            book_lists.append( cls(book_list) )
+        return book_lists
+
 # get lists by book id
-# get all lists
+    @classmethod
+    def get_all_lists_by_book_id(cls, book_id):
+        data = { 'id' : book_id }
+        query = """
+        SELECT * FROM book_lists 
+        WHERE book_id = %(id)s
+        ;"""
+        results = connectToMySQL(cls.DB).query_db( query, data )
+        book_lists = []
+        for book_list in results:
+            book_lists.append( cls(book_list) )
+        return book_lists
+
+# currently reading list
+# finished reading list
+# users that saved this list

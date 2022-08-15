@@ -47,3 +47,10 @@ def index():
 #    session['user_id'] = user_in_db.id
 #    # never render on a post!!!
 #    return redirect("/dashboard")
+
+# get user friends and posts
+
+# get user reviews
+    
+# get user books posted
+# books your reading
