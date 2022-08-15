@@ -16,7 +16,37 @@ class Message:
         self.updated_at = data['updated_at']
 
 # create message
+    @classmethod
+    def create_message(cls,data):
+        query = """
+        INSERT INTO messages 
+        (content, recipient_id, sender_id) 
+        VALUES (%(content)s, %(recipient_id)s, %(sender_id)s)
+        ;"""
+        connectToMySQL(cls.DB).query_db(query, data)
 
 # delete message
+    @classmethod
+    def delete_message(cls, message_id):
+        data = { 'id' : message_id }
+        # create authorizations
+        query = """
+        DELETE FROM messages WHERE id = %(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db( query, data )
+
 # get user messages
+    @classmethod
+    def get_user_messages(cls, user_id):
+        data = { 'id' : user_id }
+        query = """
+        SELECT * FROM messages 
+        WHERE recipient_id = %(id)s
+        ;"""
+        results = connectToMySQL(cls.DB).query_db( query, data )
+        messages = []
+        for message in results:
+            messages.append( cls(message) )
+        return messages
+
 # get messages sent

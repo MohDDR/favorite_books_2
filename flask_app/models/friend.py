@@ -58,7 +58,7 @@ class Friend:
     def get_user_friends(cls, data):
         query = """
         SELECT * FROM friends
-        LEFT JOIN users ON friends.user_id = user.id
+        LEFT JOIN users AS user ON friends.user_id = user.id
         LEFT JOIN users AS friend ON friends.friend_id = friend.id
         WHERE friends.user_id = %(user_id)s
         ;"""
