@@ -15,6 +15,8 @@ class Message:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
+        self.sender = None
+
 # create message
     @classmethod
     def create_message(cls,data):
@@ -35,18 +37,19 @@ class Message:
         ;"""
         return connectToMySQL(cls.DB).query_db( query, data )
 
-# get user messages
+# get user messages user has sent and received
     @classmethod
     def get_user_messages(cls, user_id):
         data = { 'id' : user_id }
         query = """
-        SELECT * FROM messages 
-        WHERE recipient_id = %(id)s
-        ;"""
+        "select messages.*,
+        sender.id, sender.username from users as sender
+        left join messages on messages.sender_id = sender.id
+        left join users as recipient on messages.recipient_id = recipient.id
+        where recipient.id or sender.id = %(id)s
+        ; """
         results = connectToMySQL(cls.DB).query_db( query, data )
         messages = []
         for message in results:
             messages.append( cls(message) )
         return messages
-
-# get messages sent

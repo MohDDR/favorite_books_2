@@ -58,34 +58,6 @@ class User:
         user = cls( results[0] )
         return user
 
-# get user with messages
-    @classmethod
-    def get_user_with_messages(cls):
-        data = { 'id' : session['user_id']}
-        query = '''
-        SELECT * FROM messages
-        LEFT JOIN users AS sender ON messages.sender_id = sender.id
-        LEFT JOIN users AS recipient ON messages.recipient_id = recipient.id
-        WHERE recipient.id = %(id)s
-        ;'''
-        results = connectToMySQL(User.DB).query_db(query, data)
-        user_with_messages = []
-        for row in results:
-            user_with_messages = cls(row)
-            messages = {
-                "id" : row["messages.id"],
-                "content" : row['content'],
-                "sender_id" : row['sender_id'],
-                "recipient_id" : row['recipient_id'],
-                "created_at" : row["messages.created_at"],
-                "updated_at" : row["messages.updated_at"],
-            }
-            print('friendship ************** ',( user_with_messages ), (messages))
-            # needs editing
-            user_with_messages.messages_received.append( message.Message( messages ))
-            user_with_messages.messages_sent.append( message.Message( messages ))
-        return user_with_messages
-
 # get messages user sent
 
 # get most recent user activity
