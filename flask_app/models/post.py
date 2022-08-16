@@ -48,7 +48,7 @@ class Post:
 
 # get posts by poster id
     @classmethod
-    def get_all_posts_by_poster_id(cls, poster_id):
+    def get_posts_by_poster(cls, poster_id):
         data = { 'id' : poster_id }
         query = """
         SELECT * FROM posts 
