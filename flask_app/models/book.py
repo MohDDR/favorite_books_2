@@ -70,7 +70,7 @@ class Book:
 
 # get book by author
     @classmethod
-    def get_books_by_poster(cls, poster_id):
+    def find_books_by_poster(cls, poster_id):
         data = { 'id' : poster_id }
         query = """
         SELECT * FROM books 
@@ -84,7 +84,7 @@ class Book:
 
 # get book by description keyword
     @classmethod
-    def get_books_by_desc(cls, desc):
+    def find_books_by_desc(cls, desc):
         data = { 'desc' : desc }
         query = """
         SELECT * FROM books 
@@ -107,7 +107,6 @@ class Book:
         LEFT JOIN book_lists ON book_lists.book_id = books.id 
         WHERE books.id = %(id)s
         ;""" 
-        #search item requires % at start and end, and replaces all spaces
         results = connectToMySQL(cls.DB).query_db( query, data )
         book_with_reviews_and_lists = cls( results[0] )
         for row in results:
